@@ -1,0 +1,117 @@
+nav .navbar-brand
+{
+    /* size for brand */
+    font-size: xx-large;
+}
+.roundimage {
+    flex-shrink: 0;
+    position: relative;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(238, 238, 238);
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+}
+/* colors for brand */
+nav .navbar-brand .blue
+{
+    color: #537fbe;
+}
+nav .navbar-brand .red
+{
+    color: #ea433b;
+}
+.block {
+    display: block;
+}
+.manyingredients {
+    display: flex;
+    flex-wrap: wrap;
+}
+nav .navbar-brand .yellow
+{
+    color: #f5b82e;
+}
+nav .navbar-brand .green
+{
+    color: #2e944b;
+}
+.allingredient {
+    flex: 0 1 30%;
+    -webkit-box-flex: 0;
+    dis .ingredientgroup {
+    margin-left: 12px;
+}
+.ingredientname {
+    color: rgb(36, 36, 36);
+    font-family: "Source Sans Pro", "Trebuchet MS", Helvetica, sans-serif;
+    margin: 4px 0px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+}
+.ingredients {
+    flex: 0 1 50%;
+    -webkit-box-flex: 0;
+    display: flex;
+    margin-top: 24px;
+    -webkit-box-align: center;
+    align-items: center;
+}
+main .form-control
+{
+    /* center form controls */
+    display: inline-block;
+
+    /* override Bootstrap's 100% width for form controls */
+    width: auto;
+}
+
+main
+{
+    /* scroll horizontally as needed */
+    overflow-x: auto;
+
+    /* center contents */
+    text-align: center;
+}
+
+main img
+{
+    /* constrain images on small screens */
+    max-width: 100%;
+}
+#labels {
+    font-size: 1em;
+    margin: 0;
+    -webkit-text-stroke: 0.8px #0b0028;
+}
+#labels2 {
+    font-size: 1em;
+    margin: 0;
+    -webkit-text-stroke: 0.8px #03e92a;
+}
+.carousel-caption {
+    position: absolute;
+    right: 5%;
+    bottom: 2px;
+    left: 5%;
+    z-index: 10;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: #fff;
+    text-align: center;
+}
+.column {
+    float: left;
+    width: 30%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}

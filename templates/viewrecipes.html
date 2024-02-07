@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Main Menu
+{% endblock %}
+
+{% block main %}
+
+
+<script>
+        $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+    });
+</script>
+<br>
+<div>
+    <form class="form-inline" method="post" action="/recipelistcontains" id = "recipelist">
+        <div class="form-group">
+            <select id = "ingredients" name = "ingredients" class="js-example-basic-multiple" multiple="multiple">
+                {% for n in ingredients %}
+                    <option value="{{ n.ingredient_id }}">{{ n.ingredient }}</option>
+                {% endfor %}
+            </select>
+            <input type='submit'>
+        </div>
+    </form></div>
+<br>
+
+<h1 align="center">Recipes</h1>
+
+
+
+<form class="form-inline" method="post" action="/recipelist" id = "recipelist">
+<div class="container">
+  {% for n in recipes %}
+  <div class="row">
+    <div class = "col-sm">
+      <p>{{n.recipe_name}}</p>
+    </div>
+    <div class="col-sm">
+      <button type="submit" name="recipeid" value="{{n.recipe_id}}"  > <img class="img-fluid" src="data:image/png;base64,{{ n.display_image  }}" alt="{{n.recipe_name}}"></button>
+    </div>
+    <div class="col-sm">
+      <button type="submit" name="addweekrecipe" value="{{n.recipe_id}}">Add Recipe for this Week</button>
+      <button type="submit" name="addnextweekrecipe" value="{{n.recipe_id}}">Add Recipe for Next Week</button>
+      
+    </div>   
+  </div>
+  {% endfor %} 
+</div>
+</form>
+
+{% endblock %}

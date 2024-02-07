@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Main Menu
+{% endblock %}
+
+{% block main %}
+
+
+<script>
+        $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+    });
+</script>
+
+<button type="button" onclick="window.location.href='/'">Go back Home</button>
+<br>
+{% set urlprev = url_for('weekplan',week=week|int - 1,year=year) %}
+{% set urlnext = url_for('weekplan',week=week|int +1,year=year) %}
+<button type="button" onclick="window.location.href='{{urlprev}}'">Previous Week</button>
+<br>
+<button type="button" onclick="window.location.href='{{urlnext}}'">Next Week</button>
+<br>
+<form action="/recipesteps" method="post" id = "recipe">
+<table class = "table">
+  <tr>
+      <th scope="col">Recipe</th>
+      <th scope="col">Image</th>
+
+  </tr>
+  {% for n in recipes %}
+      <tr>
+          <th scope="col">{{ n.recipe_name }} </th>
+          <th scope="col"><button type="submit" name="recipeid" value="{{n.recipe_id}}"  > <img src="data:image/png;base64,{{ n.display_image  }}" alt="{{n.recipe_name}}" class="img-fluid"></button></th>
+      </tr>
+  {% endfor %}
+
+</table>
+</form>
+
+<h>Ingredients</h>
+<div class="block">
+    <div class="manyingredients">
+        {% for n in ingredients %}
+        <div class="allingredient">
+            <img class="roundimage" src="data:image/png;base64,{{ n.display_image }}" alt="ingredient">
+            <div class="ingredientgroup">
+                <p class="ingredientname">{{ n.ingredient }}</p>
+                <p class="ingredientname">{{ n.amount }} {{ n.unit }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}

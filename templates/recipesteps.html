@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Main Menu
+{% endblock %}
+
+{% block main %}
+
+
+<script>
+    $(document).ready(function () {
+        $('.js-example-basic-multiple').select2();
+    });
+</script>
+
+
+
+<div class="container-lg my-3">
+    <div id="myCarousel" class="carousel slide" data-bs-interval="false" data-pause="hover">
+        <!-- Carousel indicators -->
+        <ol class="carousel-indicators">
+            <li data-bs-target="#myCarousel"  data-bs-slide-to="0" class="active"></li>
+            {% for n in recipe.steps %}
+            <li data-bs-target="#myCarousel"  data-bs-slide-to="{{n.step_num}}"></li>
+            {% endfor %}
+        </ol>
+        
+        <!-- Wrapper for carousel items -->
+        <div class="carousel-inner">
+            {% for n in recipe.steps %}
+            <div class="carousel-item {% if n.step_num == 1 %} active {% endif %}" data-bs-interval="false">
+                <img src="data:image/png;base64,{{n.display_image}}"  class="img-fluid" alt="Slide 1">
+                <div style="margin: 0 -5px">&nbsp;</div>
+                <p>{{n.instruction}}</p>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <!-- Carousel controls -->
+        <a class="carousel-control-prev" href="#myCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#myCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
+    </div>
+</div>
+
+
+
+
+
+<button type="button" onclick="window.location.href='/'">Go back Home</button>
+
+<h1 align="center">{{ recipe.recipe_name }}</h1>
+
+
+<div class="block">
+    <div class="manyingredients">
+        {% for n in recipe.ingredients %}
+        <div class="allingredient">
+            <img class="roundimage" src="data:image/png;base64,{{ n.display_image }}" alt="ingredient">
+            <div class="ingredientgroup">
+                <p class="ingredientname">{{ n.ingredient }}</p>
+                <p class="ingredientname">{{ n.amount }} {{ n.unit }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

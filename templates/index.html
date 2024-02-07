@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Main Menu
+{% endblock %}
+
+{% block main %}
+
+<a href="{{url_for('addrecipe')}}">Add Recipes</a>
+<br>
+<a href="{{url_for('viewrecipes')}}">View Recipes</a>
+<br>
+<a href="{{url_for('weekplan',week=week,year=year)}}">View weekplan for the current week</a>
+<br>
+
+
+{% endblock %}

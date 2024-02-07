@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Main Menu
+{% endblock %}
+
+{% block main %}
+<form method="post" enctype="multipart/form-data">
+    <label for="title">Recipe Name</label>
+    <br>
+    <input type="text" name="recipename"
+           placeholder="Chicken Noodle"
+           value=""></input>
+    <br>
+
+    <label for="content">Recipe Description</label>
+    <br>
+    <textarea name="content"
+              placeholder="Put Recipe Description Here"
+              rows="15"
+              cols="60"></textarea>
+    <br>
+    <p><input type="file" name="file"></p>
+    <br>
+    <br>
+    <button type="submit">Submit</button>
+</form>
+
+
+
+{% endblock %}

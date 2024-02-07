@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Main Menu
+{% endblock %}
+
+{% block main %}
+<div class="block">
+    <div class="manyingredients">
+
+        {% for n in ingredients %}
+        <div class="allingredient">
+            <form method="post" enctype="multipart/form-data">
+                <label for="title">Ingredient id {{ n[1] }}</label>
+                <br>
+                <input type="text" name="name"
+                       placeholder="Name here"
+                       value="{{ n[0] }}">
+                <br>
+                <img class="roundimage" src="data:image/png;base64,{{ n[2] }}" alt="ingredient">
+                <p><input type="file" name="file"></p>
+                <br>
+                <br>
+
+
+                <br>
+
+                <input class="btn btn-primary" name="fileimage" type="submit" value="{{ n[1] }}">
+            </form>
+            <br><br>
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+            <br />
+
+
+            {% endblock %}

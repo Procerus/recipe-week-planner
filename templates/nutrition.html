@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Main Menu
+{% endblock %}
+
+{% block main %}
+
+<h1>{{ recipe.recipe_name }}</h1>
+
+<form method="post" enctype="multipart/form-data">
+    <label for="title">Nutrition</label>
+    <br />
+    <p>
+        Calories   <input type="text" name="calories"
+                          placeholder="{{ recipe.nutrition.calories }}"
+                          value="{{ recipe.nutrition.calories }}">
+    </p>
+    <br>
+    <p>
+        Sugar   <input type="text" name="sugar"
+                       placeholder="{{ recipe.nutrition.sugar }}"
+                       value="{{ recipe.nutrition.sugar }}">
+    </p>
+    <br>
+    <p>
+        Fat   <input type="text" name="fat"
+                     placeholder="{{ recipe.nutrition.fat }}"
+                     value="{{ recipe.nutrition.fat }}">
+    </p>
+    <br>
+
+    <button type="submit">Submit</button>
+</form>
+<br />
+
+<a href="{{url_for('steps',recipeid=recipe.recipe_id,step=1)}}">Steps</a>
+
+
+{% endblock %}

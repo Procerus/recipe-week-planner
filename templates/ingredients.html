@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Main Menu
+{% endblock %}
+
+{% block main %}
+
+
+<script>
+    $(document).ready(function () {
+        $('.js-example-basic-multiple').select2();
+    });
+</script>
+
+<h1>{{ recipename }}</h1>
+<br />
+<div class="block">
+    <div class="manyingredients">
+        {% for n in recipe.ingredients %}
+        <div class="allingredient">
+            <img class="roundimage" src="data:image/png;base64,{{ n.display_image }}" alt="ingredient">
+            <div class="ingredientgroup">
+                <p class="ingredientname">{{ n.ingredient }}</p>
+                <p class="ingredientname">{{ n.amount }} {{ n.unit }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="block">
+    <div class="allingredient">
+
+        <div class="allingredient">
+            <form method="post" enctype="multipart/form-data">
+                <label for="title">Ingredient</label>
+                <br>
+                <select id="ingredients" name="ingredients" class="js-example-basic-multiple" multiple="multiple">
+                    {% for n in ingredients %}
+                    <option value="{{ n.ingredient_id }}">{{n.ingredient}}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <input type="text" name="amount"
+                       placeholder="amount here"
+                       value="">
+                <br>
+                <input type="text" name="unit"
+                       placeholder="Unit here"
+                       value="">
+                <br>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+        <br />
+
+        <div class="allingredient">
+            <h1>New Ingredient here</h1>
+            <form method="post" enctype="multipart/form-data">
+                <label for="title">Ingredient</label>
+                <br>
+                <input type="text" name="ingredient"
+                       placeholder="New Ingredient here"
+                       value="">
+                <br>
+                <input type="text" name="amount"
+                       placeholder="amount here"
+                       value="">
+                <br>
+                <input type="text" name="unit"
+                       placeholder="Unit here"
+                       value="">
+                <br>
+                <p><input type="file" name="file"></p>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+        </div>
+    <a href="{{url_for('nutrition',recipeid=recipe.recipe_id)}}">Nutrition</a>
+
+
+    {% endblock %}

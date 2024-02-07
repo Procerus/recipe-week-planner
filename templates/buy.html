@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Buy Stock
+{% endblock %}
+
+{% block main %}
+    <form action="/buy" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" id = "symbol" name="symbol" placeholder="Stock symbol" type="text">
+        </div>
+        <div class="form-group">
+            <input type="number" step = "0.01" id = "shares" name = "shares">
+        </div>
+        <button class="btn btn-primary" type="submit">Buy</button>
+    </form>
+{% endblock %}
+<div class="card" id = "element1">
+
+    <div class="container">
+    
+    <h4><b>Name: {{ name }}</b></h4>
+    <img id="picture" src="data:image/png;base64,{{ image }}" alt="Avatar" style="width:100%;">
+    {% for n in steps %}
+    <li>{{n[0]}}<img src="data:image/png;base64,{{n[1]}}"></li> 
+    <br>        
+    {% endfor %}
+    
+     </div>
+    </div>

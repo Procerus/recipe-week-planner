@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Main Menu
+{% endblock %}
+
+{% block main %}
+    <table class = "table">
+        <tr>
+            <th scope="col">Symbol</th>
+            <th scope="col">Name</th>
+            <th scope="col">Shares</th>
+            <th scope="col">Price</th>
+            <th scope="col">TOTAL</th>
+        </tr>
+        {% for n in stock %}
+            <tr>
+                <th scope="col">{{ n[0] }} </th>
+                <th scope="col">{{ n[1] }} </th>
+                <th scope="col">{{ n[2] }} </th>
+                <th scope="col">{{ n[3] | usd }} </th>
+                <th scope="col">{{ n[4] | usd }} </th>
+            </tr>
+        {% endfor %}
+        <tr>
+            <th scope="col">CASH</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col">{{ total | usd}} </th>
+        </tr>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col">{{ all | usd}} </th>
+        </tr>
+    </table>
+{% endblock %}

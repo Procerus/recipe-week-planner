@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Main Menu
+{% endblock %}
+
+{% block main %}
+
+
+<h1>{{ recipename }}</h1>
+<div class="row">
+    <div class="column">
+        {% if (step|int > 1) %}
+            <a href="{{url_for('steps',recipeid=recipe.recipe_id,step=step|int-1)}}">Steps</a>
+        {% endif %}
+    </div>
+    <div class="column">
+        <form method="post" enctype="multipart/form-data">
+            <label for="title">Edit Current Recipe Step: {{ step }}</label>
+            <br>
+
+            <label for="content">Step instruction</label>
+            <br>
+            <textarea name="content"
+                      placeholder="Put Step Instruction Here"
+                      rows="15"
+                      cols="60">{{ currentstep.instruction }}</textarea>
+            <br>
+            {% if (currentstep.display_image != None) %}
+                <img class="d-block w-100" src="data:image/png;base64,{{ currentstep.display_image }}" alt="First">
+            {% endif %}
+            <p><input type="file" name="file"></p>
+            <br>
+            <input class="btn btn-primary" name="add" type="submit" value="{{ step }}">
+        </form>
+    </div>
+    <div class="column">
+        {% if maxstep != None and step|int < recipe.maxstep %}
+            <a href="{{url_for('steps',recipeid=recipe.recipe_id,step=step|int+1)}}">Steps</a>
+        {% endif %}
+    </div>
+</div>
+{% if (step|int == recipe.maxstep) %}
+    <div class="row">
+        <div class="column">
+            <form method="post" enctype="multipart/form-data">
+                <label name ="currentstep" for="title">Add New Recipe Step: {{ step|int + 1 }}</label>
+                <br>
+                    
+                <label for="content">Step instruction for {{ recipe.maxstep|int + 1 }}</label>
+                <br>
+                <textarea name="content"
+                          placeholder="Put Step Instruction Here"
+                          rows="15"
+                          cols="60"></textarea>
+                <br>
+                <p><input type="file" name="file"></p>
+                <br>
+                <input class="btn btn-primary" name ="add" type="submit" value="{{ step|int + 1 }}">
+            </form>
+        </div>
+    </div>  
+{% endif %}
+{% endblock %}
