@@ -54,6 +54,7 @@ class dbHelper:
                             host=self.db_server_address,
                             database='recipes')
         cursor=db.cursor()
+        print(sql1)
         if image == None:
             cursor.execute(sql1)
         else:
@@ -219,14 +220,10 @@ def editingredients():
         except:
             image = None
         name = request.form.get("name")
-        update_ingredient(id,name,image)
+        Ingredient(None,id,name,image)
         ingredients = get_ingredients()
-    for i in range(0,len2(ingredients)):
-        if ingredients[i][2] != None:
-            ingredientlist.append((ingredients[i][0],ingredients[i][1],base64.b64encode(ingredients[i][2]).decode("utf-8")))
-        else:
-            ingredientlist.append((ingredients[i][0],ingredients[i][1],None))
-    return render_template("ingredientlist.html",ingredients = ingredientlist)
+
+    return render_template("ingredientlist.html",ingredients = ingredients)
 
 @app.route("/recipelistcontains", methods=["POST"])
 def recipelistcontains():
@@ -277,33 +274,30 @@ for code in default_exceptions:
     app.errorhandler(code)(errorhandler)
 
 def get_all_recipe(ingredient=None,onlyname=None):
-   sql1="select recipe_id from recipe"
-   data = dbhelper.query(sql1)
-   recipes = []
-   if (len2(data) > 0):
-      for i in data:
-        if onlyname == None:
-          if ingredient != None:
-                recipe = Recipe(i[0])
-                if recipe.check_ingredient(ingredient):
-                    recipes.append(recipe)
-                else:
-                    recipes.append(Recipe(i[0]))
-        else:
-            recipe = Recipe(i[0],None,None,None,True)
-            if recipe.check_ingredient(ingredient):
+    recipes = []
+    if ingredient != None:
+        sql1="select recipe_id from ingredientlist where ingredient_id = " + str(ingredient)
+        data = dbhelper.query(sql1)        
+        if (len2(data) > 0):
+            for i in data:
+                recipe = Recipe(i[0],None,None,None,onlyname)
                 recipes.append(recipe)
-            else:
-                recipes.append(Recipe(i[0],None,None,None,True)) 
+    else:
+        sql1="select recipe_id from recipe"
+        data = dbhelper.query(sql1)
+        if (len2(data) > 0):
+            for i in data:
+                recipe = Recipe(i[0],None,None,None,onlyname)
+                recipes.append(recipe)
      
-   return recipes
+    return recipes
 
-def get_ingredients():
+def get_ingredients(shell=False):
     sql1="select ingredient_id from ingredient order by ingredient"
     data = dbhelper.query(sql1)
     ingredients = []
     for i in data:
-        ingredients.append(Ingredient(None,i[0]))
+        ingredients.append(Ingredient(None,i[0],None,None,None,None,True))
     return ingredients
 
 def get_weeknumber():
@@ -324,13 +318,15 @@ class Ingredient:
         ingredient = ""
         ingredient_image = None
         display_image = None
+        shell = False
         amount = 0
         unit = ""
         recipe_id = 0
         ingredientlist_id = 0
         
 
-        def __init__(self,recipe_id=None,ingredient_id=None,ingredient=None,image=None,newamount=None,newunit=None):
+        def __init__(self,recipe_id=None,ingredient_id=None,ingredient=None,image=None,newamount=None,newunit=None,shell=False):
+            self.shell = False
             if ( ingredient_id != None and ingredient == None):
                 self.ingredient_id = ingredient_id
                 self.get_ingredient()
@@ -360,7 +356,8 @@ class Ingredient:
                 if len2(data) != 0:
                     self.ingredient = data[0][0]
                     self.ingredient_id = data[0][1]
-                    self.ingredient_image = data[0][2]
+                    if not self.shell:
+                        self.ingredient_image = data[0][2]
             else:
                 self.add_ingredient()
             if self.ingredient_image != None:
@@ -479,8 +476,7 @@ class Recipe:
                 self.add_recipe()
             if surface == None:
                 self.get_steps()
-
-            self.get_ingredients()
+                self.get_ingredients()
             self.get_nutrition()
         ### Setters
         
@@ -570,7 +566,7 @@ class Recipe:
             data = dbhelper.query_exact(sql1)
             if (data > 0):
                 self.recipe_id = data
-                sql1 = "update recipe set recipe_name = "+ '"' + self.recipe_name + '"' + ", description = " + '"' + self.description + '"'
+                sql1 = "update recipe set recipe_name = "+ '"' + self.recipe_name + '"' + ", description = " + '"' + self.description + '"' + " where recipe_id = " + self(self.recipe_id)
             else:
                 sql1= "insert into recipe (recipe_name,description) values ("+'"' + str(self.recipe_name) + '"' +","+ '"' + str(self.description) + '"' + ")"
             dbhelper.insert(sql1)
