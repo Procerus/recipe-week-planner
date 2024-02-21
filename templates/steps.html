@@ -27,7 +27,7 @@
                       cols="60">{{ currentstep.instruction }}</textarea>
             <br>
             {% if (currentstep.display_image != None) %}
-                <img class="d-block w-100" src="data:image/png;base64,{{ currentstep.display_image }}" alt="First">
+                <img class="d-block w-100" src="{{ url_for('static', filename=currentstep.display_image) }}" alt="First">
             {% endif %}
             <p><input type="file" name="file"></p>
             <br>

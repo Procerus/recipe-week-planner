@@ -29,7 +29,7 @@
         <div class="carousel-inner">
             {% for n in recipe.steps %}
             <div class="carousel-item {% if n.step_num == 1 %} active {% endif %}" data-bs-interval="false">
-                <img src="data:image/png;base64,{{n.display_image}}"  class="img-fluid" alt="Slide 1">
+                <img src="{{ url_for('static', filename=n.display_image) }}"  class="img-fluid" alt="Slide 1">
                 <div style="margin: 0 -5px">&nbsp;</div>
                 <p>{{n.instruction}}</p>
             </div>
@@ -60,7 +60,7 @@
     <div class="manyingredients">
         {% for n in recipe.ingredients %}
         <div class="allingredient">
-            <img class="roundimage" src="data:image/png;base64,{{ n.display_image }}" alt="ingredient">
+            <img class="roundimage" src="{{ url_for('static', filename=n.display_image) }}" alt="ingredient">
             <div class="ingredientgroup">
                 <p class="ingredientname">{{ n.ingredient }}</p>
                 <p class="ingredientname">{{ n.amount }} {{ n.unit }}</p>

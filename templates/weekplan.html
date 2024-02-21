@@ -31,7 +31,7 @@
   {% for n in recipes %}
       <tr>
           <th scope="col">{{ n.recipe_name }} </th>
-          <th scope="col"><button type="submit" name="recipeid" value="{{n.recipe_id}}"  > <img src="data:image/png;base64,{{ n.display_image  }}" alt="{{n.recipe_name}}" class="img-fluid"></button></th>
+          <th scope="col"><button type="submit" name="recipeid" value="{{n.recipe_id}}"  > <img src="{{ url_for('static', filename=n.display_image) }}" alt="{{n.recipe_name}}" class="img-fluid"></button></th>
       </tr>
   {% endfor %}
 
@@ -43,7 +43,7 @@
     <div class="manyingredients">
         {% for n in ingredients %}
         <div class="allingredient">
-            <img class="roundimage" src="data:image/png;base64,{{ n.display_image }}" alt="ingredient">
+            <img class="roundimage" src="{{ url_for('static', filename=n.display_image) }}" alt="ingredient">
             <div class="ingredientgroup">
                 <p class="ingredientname">{{ n.ingredient }}</p>
                 <p class="ingredientname">{{ n.amount }} {{ n.unit }}</p>
