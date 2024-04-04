@@ -6,12 +6,12 @@
 
 {% block main %}
 
-<a href="{{url_for('addrecipe')}}">Add Recipes</a>
-<br>
-<a href="{{url_for('viewrecipes')}}">View Recipes</a>
-<br>
-<a href="{{url_for('weekplan',week=week,year=year)}}">View weekplan for the current week</a>
-<br>
-
+<div class="button-container">
+    <div class="button-group">
+      <a class="button" href="{{url_for('addrecipe')}}">Add Recipes</a>
+      <a class="button" href="{{url_for('viewrecipes')}}">View Recipes</a>
+    </div>
+    <a class="button" href="{{url_for('weekplan',week=week,year=year)}}">View Weekplan for the Current Week</a>
+  </div>
 
 {% endblock %}
