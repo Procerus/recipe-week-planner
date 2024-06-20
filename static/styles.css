@@ -3,6 +3,95 @@ nav .navbar-brand
     /* size for brand */
     font-size: xx-large;
 }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    padding: 10px;
+    color: white;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.hamburger {
+    cursor: pointer;
+    font-size: 24px;
+    padding: 10px;
+    color: white;
+    background: none;
+    border: none;
+    outline: none;
+}
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-title {
+    margin-bottom: 1rem;
+}
+.title {
+    font-size: 24px;
+    flex: 1;
+    text-align: center;
+}
+
+.nav-links {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #333;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-links a {
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+    text-align: left;
+}
+
+.nav-links a:hover {
+    background-color: #575757;
+}
+
+.closebtn {
+    cursor: pointer;
+    font-size: 24px;
+    padding: 10px;
+    color: white;
+    background: none;
+    border: none;
+    outline: none;
+    display: none; /* Initially hidden */
+    align-self: flex-start; /* Align arrow button to the start */
+}
+
 .roundimage {
     flex-shrink: 0;
     position: relative;

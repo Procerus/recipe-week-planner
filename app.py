@@ -6,6 +6,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 import mysql.connector
+import pyheif
 from PIL import Image
 import time
 from datetime import datetime
@@ -164,6 +165,7 @@ def steps(recipeid,step):
 
 @app.route("/viewrecipes", methods=["GET", "POST"])
 def viewrecipes():
+    (week,year) = get_weeknumber()
     ingredients = get_ingredients()
     if request.method == "POST":
        try:
@@ -173,43 +175,10 @@ def viewrecipes():
              print(ValueError)
        recipes = get_all_recipe(ingredients)
        ingredients = get_ingredients()
-       return render_template("viewrecipes.html",ingredients=ingredients)
+       return render_template("viewrecipes.html",ingredients=ingredients, recipes = recipes,week=week,year=year)
     else:
-       return render_template("viewrecipes.html")
-
-@app.route("/streamrecipes")
-def streamrecipes():
-    @stream_with_context
-    def generate():
-
-
-   #   <button type="submit" name="addweekrecipe" value="{{n.recipe_id}}">Add Recipe for this Week</button>
-   #   <button type="submit" name="addnextweekrecipe" value="{{n.recipe_id}}">Add Recipe for Next Week</button>
-      
-   # </div>  
-        recipes = []
-        sql1="select recipe_id from recipe"
-        data = dbhelper.query(sql1)
-        yield render_template_string('<form class="form-inline" method="post" action="/recipesteps" target="_parent" id = "recipesteps">\n')
-        yield render_template_string('<div class="container">\n')
-        yield render_template_string('<div class="row">\n')
-        
-        if (len2(data) > 0):
-            for i in data:
-                recipe = Recipe(i[0],None,None,None)
-                yield render_template_string('<div class = "col-sm">\n')
-                yield render_template_string("<p>{{recipe_name}}</p>",recipe_name = recipe.recipe_name)
-                yield render_template_string("</div>")
-                yield render_template_string('<div class = "col-sm">\n')
-                yield render_template_string('<button type="submit" name="recipeid" value="{{recipe_id}}"  > <img class="img-fluid" src="{{ url_for("static", filename=display_image) }}" alt="{{recipe_name}}"></button>',recipe_id=recipe.recipe_id,display_image=recipe.display_image,recipe_name=recipe.recipe_name)
-                yield render_template_string("</div>")
-                yield render_template_string('<div class = "col-sm">\n')
-                yield render_template_string('<button type="submit" name="addweekrecipe" value="{{recipe_id}}">Add Recipe for this Week</button>',recipe_id=recipe.recipe_id)
-                yield render_template_string(' <button type="submit" name="addnextweekrecipe" value="{{recipe_id}}">Add Recipe for Next Week</button>',recipe_id=recipe.recipe_id)
-        yield render_template_string('</div>\n')
-        yield render_template_string('</div>\n')
-        yield render_template_string('</form>\n')
-    return app.response_class(generate())
+       recipes = get_all_recipe()
+       return render_template("viewrecipes.html",recipes = recipes,week=week,year=year)
 
 @app.route("/recipesteps", methods=["POST"])
 def recipesteps():
@@ -374,6 +343,51 @@ def len2(item):
         return 0
     else:
         return len(item)
+
+def generate_thumbnail(image_path, thumbnail_path, size=(250,250)):
+    try:
+        with Image.open("static/"+image_path) as img:
+            img = img.convert('RGB')
+            img.thumbnail(size)
+            print("saving thumbnail at: " + thumbnail_path)
+            img.save(thumbnail_path)  
+    except Exception as e:
+        print(f"Error creating thumbnail: {e}")
+        try:
+            convert_heic_to_jpeg("static/" + image_path.replace(".jpg",".heic"),"static/" + image_path)
+            with Image.open("static/"+image_path) as img:
+                img.thumbnail(size)
+                print("saving thumbnail at: " + thumbnail_path)
+                img.save(thumbnail_path)        
+        except Exception as e:
+            print(f"Error creating thumbnail 2: {e}")
+
+def Set_Thumbnaiil_Image(image_location,location = "recipe"):
+    thumbnail_dir = 'images/' + location + '/thumbnails'
+    if not os.path.exists("static/" +thumbnail_dir):
+        os.makedirs(thumbnail_dir)
+    thumbnail_path = os.path.join(thumbnail_dir, os.path.basename(image_location))
+    if not os.path.exists("static/" + thumbnail_path):
+        print("creating new image at static/" + thumbnail_path)
+        generate_thumbnail(image_location, "static/" + thumbnail_path)
+    return thumbnail_path        
+
+def convert_heic_to_jpeg(heic_file_path, jpeg_file_path):
+    # Read HEIC file
+    heif_file = pyheif.read(heic_file_path)
+    
+    # Convert HEIF/HEIC to a format Pillow can work with
+    image = Image.frombytes(
+        heif_file.mode,
+        heif_file.size,
+        heif_file.data,
+        "raw",
+        heif_file.mode,
+        heif_file.stride,
+    )
+    
+    # Save image as JPEG
+    image.save(jpeg_file_path, "JPEG")
 
 class Ingredient:
         ingredient_id = 0
@@ -610,7 +624,7 @@ class Recipe:
                 self.recipe_name = data[0][0]
                 self.description = data[0][1]
             self.recipe_image = "images/recipe/" + str(self.recipe_id) + ".jpg"
-            self.display_image = self.recipe_image
+            self.display_image = Set_Thumbnaiil_Image(self.recipe_image)
 
         def get_ingredients(self):
             if self.recipe_id != 0:

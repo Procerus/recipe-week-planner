@@ -6,52 +6,66 @@
 
 {% block main %}
 
-
 <script>
-        $(document).ready(function() {
+    $(document).ready(function() {
         $('.js-example-basic-multiple').select2();
     });
 </script>
 
-<button type="button" onclick="window.location.href='/'">Go back Home</button>
-<br>
-{% set urlprev = url_for('weekplan',week=week|int - 1,year=year) %}
-{% set urlnext = url_for('weekplan',week=week|int +1,year=year) %}
-<button type="button" onclick="window.location.href='{{urlprev}}'">Previous Week</button>
-<br>
-<button type="button" onclick="window.location.href='{{urlnext}}'">Next Week</button>
-<br>
-<form action="/recipesteps" method="post" id = "recipe">
-<table class = "table">
-  <tr>
-      <th scope="col">Recipe</th>
-      <th scope="col">Image</th>
-
-  </tr>
-  {% for n in recipes %}
-      <tr>
-          <th scope="col">{{ n.recipe_name }} </th>
-          <th scope="col"><button type="submit" name="recipeid" value="{{n.recipe_id}}"  > <img src="{{ url_for('static', filename=n.display_image) }}" alt="{{n.recipe_name}}" class="img-fluid"></button></th>
-      </tr>
-  {% endfor %}
-
-</table>
-</form>
-
-<h>Ingredients</h>
-<div class="block">
-    <div class="manyingredients">
-        {% for n in ingredients %}
-        <div class="allingredient">
-            <img class="roundimage" src="{{ url_for('static', filename=n.display_image) }}" alt="ingredient">
-            <div class="ingredientgroup">
-                <p class="ingredientname">{{ n.ingredient }}</p>
-                <p class="ingredientname">{{ n.amount }} {{ n.unit }}</p>
-            </div>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between mb-3">
+        <button type="button" class="btn btn-primary" onclick="window.location.href='/'">Go back Home</button>
+        <div>
+            {% set urlprev = url_for('weekplan', week=week|int - 1, year=year) %}
+            {% set urlnext = url_for('weekplan', week=week|int + 1, year=year) %}
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='{{urlprev}}'">Previous Week</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='{{urlnext}}'">Next Week</button>
         </div>
+    </div>
+
+    <form action="/recipesteps" method="post" id="recipe">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Recipe</th>
+                    <th scope="col">Calories</th>
+                    <th scope="col">Sugar</th>
+                    <th scope="col">Fat</th>
+                    <th scope="col">Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for n in recipes %}
+                    <tr>
+                        <td>{{ n.recipe_name }}</td>
+                        <td>{{ n.nutrition.calories }}</td>
+                        <td>{{ n.nutrition.sugar }}</td>
+                        <td>{{ n.nutrition.fat }}</td>
+                        <td>
+                            <button type="submit" name="recipeid" value="{{n.recipe_id}}" class="btn btn-link p-0">
+                                <img src="{{ url_for('static', filename=n.display_image) }}" alt="{{n.recipe_name}}" class="img-fluid" style="max-width: 200px;">
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+
+    <h2 class="mt-5">Ingredients</h2>
+    <div class="row">
+        {% for n in ingredients %}
+            <div class="col-md-3 text-center mb-4">
+                <div class="card h-100">
+                    <img class="card-img-top rounded-circle mx-auto mt-3" src="{{ url_for('static', filename=n.display_image) }}" alt="ingredient" style="max-width: 50px;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ n.ingredient }}</h5>
+                        <p class="card-text">{{ n.amount }} {{ n.unit }}</p>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
     </div>
 </div>
-
 
 {% endblock %}
