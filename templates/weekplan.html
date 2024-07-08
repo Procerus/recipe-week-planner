@@ -46,6 +46,12 @@
                                 <img src="{{ url_for('static', filename=n.display_image) }}" alt="{{n.recipe_name}}" class="img-fluid" style="max-width: 200px;">
                             </button>
                         </td>
+                        <td>
+                            <form action="{{ url_for('weekplan', week=week, year=year) }}" method="post">
+                                <input type="hidden" name="recipeid" value="{{n.recipe_id}}">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

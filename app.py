@@ -67,6 +67,16 @@ class dbHelper:
         db.commit()
         db.close()
 
+    def delete(self,sql1):
+        db = mysql.connector.connect(user=self.db_username, password=self.db_password,
+                            host=self.db_server_address,
+                            database='recipes')
+        cursor=db.cursor()
+        #print(sql1)
+        cursor.execute(sql1)
+        db.commit()
+        db.close()      
+
 dbhelper = dbHelper()
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
@@ -92,8 +102,13 @@ def index():
        return render_template("index.html",week=week,year=year)
 
 @app.route("/weekplan/<week><year>", methods=["GET", "POST"])
-def weekplan(week,year,recipeid=None):
-       weekplan = WeekPlan(week,year)
+def weekplan(week=0,year=0,recipeid=None):
+       if request.method == "POST":
+           weekplan = WeekPlan(week,year)
+           weekplan.delete_recipe(request.form.get("recipeid")) 
+       else:
+           weekplan = WeekPlan(week,year)
+
        #for i in weekplan.ingredients:
            #print(i.ingredient_image)
        return render_template("weekplan.html",recipes=weekplan.recipes,ingredients = weekplan.ingredients,week=week,year=year)
@@ -772,6 +787,23 @@ class WeekPlan:
 
                 else:
                     self.ingredients.append(j)
+
+    def delete_recipe(self,recipe_id):
+        sql1 = "select weekplan_id from weekplan where week = " +str(self.week) + " and year = " + str(self.year) + " and recipe_id = " + str(recipe_id) 
+        data = dbhelper.query_exact(sql1)
+        if data > 0:
+            sql1 = "delete from weekplan where weekplan_id =" + str(data) 
+            dbhelper.delete(sql1)
+            print("recipeid = " + str(recipe_id))
+            for recipe in self.recipes:
+                print(recipe.recipe_id)
+                if int(recipe.recipe_id) == int(recipe_id):
+                    print("deleted")
+                    self.recipes.remove(recipe)
+                    break
+        else:
+            print("Weekplan Not Found:" + str(data))
+        
 
 
 
