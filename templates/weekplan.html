@@ -23,7 +23,6 @@
         </div>
     </div>
 
-    <form action="/recipesteps" method="post" id="recipe">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -42,9 +41,13 @@
                         <td>{{ n.nutrition.sugar }}</td>
                         <td>{{ n.nutrition.fat }}</td>
                         <td>
+
+                        <form action="/recipesteps" method="post" id="recipe">
                             <button type="submit" name="recipeid" value="{{n.recipe_id}}" class="btn btn-link p-0">
                                 <img src="{{ url_for('static', filename=n.display_image) }}" alt="{{n.recipe_name}}" class="img-fluid" style="max-width: 200px;">
                             </button>
+
+                        </form>
                         </td>
                         <td>
                             <form action="{{ url_for('weekplan', week=week, year=year) }}" method="post">
@@ -56,7 +59,6 @@
                 {% endfor %}
             </tbody>
         </table>
-    </form>
 
     <h2 class="mt-5">Ingredients</h2>
     <div class="row">

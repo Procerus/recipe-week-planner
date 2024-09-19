@@ -6165,6 +6165,16 @@ main img
 .mdi-card-off-outline::before {
     content: "\F1603"
 }
+.image-box{
+    max-height:750px;
+    max-width:100%;
+    height:auto;
+    width:auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    
+}
 
 .mdi-card-outline::before {
     content: "\F0B76"

@@ -3,3 +3,5 @@ flask_wtf==1.2.1
 mysql_connector_repackaged==0.3.1
 Pillow==10.3.0
 Werkzeug==3.0.3
+mysql-connector=2.2.9
+pyheif=0.8.0

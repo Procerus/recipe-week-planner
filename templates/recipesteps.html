@@ -29,7 +29,7 @@
         <div class="carousel-inner">
             {% for n in recipe.steps %}
             <div class="carousel-item {% if n.step_num == 1 %} active {% endif %}" data-bs-interval="false">
-                <img src="{{ url_for('static', filename=n.display_image) }}"  class="img-fluid" alt="Slide 1">
+                <img src="{{ url_for('static', filename=n.display_image) }}"  class="image-box" alt="Slide 1">
                 <div style="margin: 0 -5px">&nbsp;</div>
                 <p>{{n.instruction}}</p>
             </div>
